@@ -13,27 +13,28 @@ uint32_t *alu_a, *alu_b, *alu_op, *alu_rst, *alu_flag,
 
 int total_count, failed_count;
 
-
 void init_mem_map(void)
 {
-  alu_a     = addr_map(0x80000000);
+  addr_t base = 0x400000000;
+  alu_a     = addr_map(base+0x0);
   // alu_b = alu_a + 2;
-  alu_b     = addr_map(0x80000008);
-  alu_op    = addr_map(0x80010000);
-  alu_rst   = addr_map(0x80020000);
-  alu_flag  = addr_map(0x80020008);
+  alu_b     = addr_map(base+0x8);
+  alu_op    = addr_map(base+0x10000);
+  alu_rst   = addr_map(base+0x20000);
+  alu_flag  = addr_map(base+0x20008);
 
-  rf_waddr  = addr_map(0x80030000);
-  // rf_wdata = rf_waddr + 2;
-  rf_wdata  = addr_map(0x80030008);
-  rf_wen    = addr_map(0x80040000);
-  rf_raddr1 = addr_map(0x80050000);
+  rf_waddr  = addr_map(base+0x30000);
+  //rf_wdata = rf_waddr + 2;
+  rf_wdata  = addr_map(base+0x30008);
+  rf_wen    = addr_map(base+0x40000);
+  rf_raddr1 = addr_map(base+0x50000);
   // rf_raddr2 = rf_raddr1 + 2;
-  rf_raddr2 = addr_map(0x80050008);
-  rf_rdata1 = addr_map(0x80060000);
+  rf_raddr2 = addr_map(base+0x50008);
+  rf_rdata1 = addr_map(base+0x60000);
   // rf_rdata2 = rf_rdata2 + 2;
-  rf_rdata2 = addr_map(0x80060008);
+  rf_rdata2 = addr_map(base+0x60008);
 }
+
 
 
 #define RD    0
