@@ -1,0 +1,12 @@
+#
+# Generated temporary files
+#
+
+boot_bin/
+fsbl/
+hw_plat/
+pmufw/
+.fsbl_gen
+.pmufw_gen
+.Xil
+
