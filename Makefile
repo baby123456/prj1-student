@@ -105,6 +105,7 @@ FPGA_RUN := $(shell pwd)/run/fpga_run.sh
 USER ?= none
 
 BOARD_IP ?= none
+NODE_IP ?= none
 
 .PHONY: FORCE
 
@@ -296,7 +297,7 @@ endif
 local_run:
 ifneq (${BOARD_IP},none)
 	@mkdir -p ./run/log
-	@cd ./run && bash $(FPGA_RUN) $(VIVADO_BIN) n local $(BOARD_IP) | tee ./log/local_run.log
+	@cd ./run && bash $(FPGA_RUN) $(VIVADO_BIN) n local $(BOARD_IP) $(NODE_IP)| tee ./log/local_run.log
 else
 	$(error Please correctly set IP address of the FPGA board)
 endif
