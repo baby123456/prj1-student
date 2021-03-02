@@ -20,6 +20,7 @@ BIT_FILE_BIN=system.bit.bin
 BIT_FILE=../hw_plat/$BIT_FILE_BIN
 BIT_TARGET_LOC=/lib/firmware
 
+FPGA_CFG_FLAG=/sys/class/fpga_manager/fpga0/flags
 FPGA_CFG_LOC=/sys/class/fpga_manager/fpga0/firmware
 
 XVC_SERVER_BIN=xvc_server
@@ -120,10 +121,14 @@ else
 	exit
 fi
 
+REMOTE_HOST_IP=$5
+
 REMOTE_USER=root
 REMOTE_HOME=/$REMOTE_USER
 
 SSH_TARGET=$REMOTE_USER@$REMOTE_IP
+SSH_CONFIG_TARGET=$REMOTE_USER@$REMOTE_HOST_IP
+
 SSH_RUN="sshpass -p $ROOT_PASSWD"
 SSH_FLAG="-o StrictHostKeyChecking=no"
 
@@ -133,10 +138,11 @@ echo "Remote target: $SSH_TARGET"
 # Step 2: FPGA configuration
 #=======================
 # Step 2.1: Copy .bit.bin file to target board
-$SSH_RUN scp $SSH_FLAG $BIT_FILE $SSH_TARGET:$BIT_TARGET_LOC
+$SSH_RUN scp $SSH_FLAG $BIT_FILE $SSH_CONFIG_TARGET:$BIT_TARGET_LOC
 
 # Step 2.2 configuration of FPGA logic
-$SSH_RUN ssh $SSH_FLAG $SSH_TARGET "echo $BIT_FILE_BIN > $FPGA_CFG_LOC" 
+$SSH_RUN ssh $SSH_FLAG $SSH_CONFIG_TARGET "echo 1 > $FPGA_CFG_FLAG" 
+$SSH_RUN ssh $SSH_FLAG $SSH_CONFIG_TARGET "echo $BIT_FILE_BIN > $FPGA_CFG_LOC" 
 
 echo "Completed FPGA configuration"
 
